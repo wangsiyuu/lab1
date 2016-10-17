@@ -1,5 +1,6 @@
 package caculate;
 //difference1
+//for B2
 import java.util.Scanner;
 import java.util.regex.*;
 import java.util.ArrayList;
