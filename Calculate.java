@@ -340,10 +340,22 @@ public class Calculate {
 	
 	private boolean standardD(String str)//输入多项式形式规则判断，化简
 	{
-		if(str.length()!=6) return false;
-		else if(!Character.isAlphabetic(str.charAt(str.length()-1))) return false;
-		else if(str.charAt(str.length()-2)!=' ') return false;
-		else return true;
+		if(str.length()!=6)
+		{
+			return false;
+		}
+		else if(!Character.isAlphabetic(str.charAt(str.length()-1)))
+		{
+			return false;
+		}
+		else if(str.charAt(str.length()-2)!=' ') 
+		{
+			return false;
+		}
+		else 
+		{
+			return true;
+		}
 	}
 	
 	private boolean standardS(String str)
