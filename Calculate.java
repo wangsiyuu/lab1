@@ -11,7 +11,7 @@ import java.util.regex.Pattern;
 public class Calculate {
 	
 	public static void main(String[] args){
-		
+		System.out.println("请输入表达式及相应的操作:");
 		Scanner s = new Scanner(System.in);
 		String Equa = null;//存表达式
 		Calculate orz = new Calculate();
@@ -338,7 +338,7 @@ public class Calculate {
 		return true;
 	}
 	
-	private boolean standardD(String str)
+	private boolean standardD(String str)//输入多项式形式规则判断，化简
 	{
 		if(str.length()!=6) return false;
 		else if(!Character.isAlphabetic(str.charAt(str.length()-1))) return false;
@@ -385,7 +385,7 @@ public class Calculate {
 		return true;
 	}
 	
-	private String convert(String str)
+	private String convert(String str)//形式转换
 	{
 		if(str==null)
 		{
