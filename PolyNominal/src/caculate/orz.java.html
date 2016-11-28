@@ -1,0 +1,289 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="zh"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../../../.resources/report.css" type="text/css"/><link rel="shortcut icon" href="../../../.resources/report.gif" type="image/gif"/><title>orz.java</title><link rel="stylesheet" href="../../../.resources/prettify.css" type="text/css"/><script type="text/javascript" src="../../../.resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../../../.sessions.html" class="el_session">Sessions</a></span><a href="../../../index.html" class="el_report">orzTest (2016-11-21 22:04:23)</a> &gt; <a href="../../index.html" class="el_group">PolyNominal</a> &gt; <a href="../index.html" class="el_bundle">src</a> &gt; <a href="index.source.html" class="el_package">caculate</a> &gt; <span class="el_source">orz.java</span></div><h1>orz.java</h1><pre class="source lang-java linenums">package caculate;
+
+import java.util.Scanner;
+import java.util.regex.*;
+import java.util.ArrayList;
+
+<span class="fc" id="L7">public class orz {</span>
+	
+	public static void main(String[] args){
+		
+<span class="nc" id="L11">		Scanner s = new Scanner(System.in);</span>
+<span class="nc" id="L12">		String Equa = null;//存表达式</span>
+<span class="nc" id="L13">		orz Orz = new orz();</span>
+<span class="nc" id="L14">		while(true){</span>
+<span class="nc" id="L15">			String Input = s.nextLine();</span>
+<span class="nc" id="L16">			int con = Orz.Control(Input);//对输入进行判断控制</span>
+<span class="nc bnc" id="L17" title="All 5 branches missed.">			switch(con){</span>
+			case 0:{
+<span class="nc" id="L19">				System.exit(0);</span>
+<span class="nc" id="L20">				break;</span>
+			}
+			case 1:{//Simplify
+<span class="nc bnc" id="L23" title="All 2 branches missed.">				if(Orz.StandardS(Input)){</span>
+<span class="nc" id="L24">					Equa = Orz.Convert(Equa);</span>
+<span class="nc" id="L25">					Orz.Simplify(Input, Equa);</span>
+<span class="nc" id="L26">				}</span>
+				else{
+<span class="nc" id="L28">					System.out.println(&quot;Invalid Input, Please Input Again!&quot;);</span>
+				}
+<span class="nc" id="L30">				break;</span>
+			}
+			case 2:{//Derivation
+<span class="nc bnc" id="L33" title="All 2 branches missed.">				if(Orz.StandardD(Input)){</span>
+<span class="nc" id="L34">					Equa = Orz.Convert(Equa);</span>
+<span class="nc" id="L35">					Orz.Derivation(Input, Equa);</span>
+<span class="nc" id="L36">				}</span>
+				else{
+<span class="nc" id="L38">					System.out.println(&quot;Invalid Input, Please Input Again!&quot;);</span>
+				}
+<span class="nc" id="L40">				break;</span>
+			}
+			case 3:{//Save as equation
+<span class="nc bnc" id="L43" title="All 2 branches missed.">				if(Orz.StandardPM(Input)){</span>
+<span class="nc" id="L44">					Equa = Input;</span>
+<span class="nc" id="L45">					System.out.println(Equa);</span>
+<span class="nc" id="L46">				}</span>
+				else{
+<span class="nc" id="L48">					System.out.println(&quot;Invalid Input, Please Input Again!&quot;);</span>
+				}
+				break;
+			}	
+			}
+		}
+	}
+	
+	private int Control(String st){//控制函数
+<span class="nc bnc" id="L57" title="All 2 branches missed.">		if(st.equals(&quot;!exit&quot;))</span>
+<span class="nc" id="L58">			return 0;</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">		else if(st.startsWith(&quot;!simplify&quot;))</span>
+<span class="nc" id="L60">			return 1;</span>
+<span class="nc bnc" id="L61" title="All 2 branches missed.">		else if(st.startsWith(&quot;!d/d&quot;))</span>
+<span class="nc" id="L62">			return 2;</span>
+		else
+<span class="nc" id="L64">			return 3;</span>
+	}
+	
+	private void Simplify(String st, String pn){//化简函数
+<span class="nc bnc" id="L68" title="All 2 branches missed.">		if(pn==null) return;</span>
+<span class="nc" id="L69">		st = st.substring(9);</span>
+<span class="nc bnc" id="L70" title="All 2 branches missed.">		if(st.length()==0){</span>
+<span class="nc" id="L71">			System.out.println(pn);</span>
+<span class="nc" id="L72">			return;</span>
+		}
+<span class="nc" id="L74">		st = st.substring(1);</span>
+<span class="nc" id="L75">		String[] num = st.split(&quot; &quot;);</span>
+<span class="nc" id="L76">		ArrayList list = new ArrayList();//判断化简命令中变量是否在多项式中</span>
+<span class="nc bnc" id="L77" title="All 2 branches missed.">		for(int i = 0; i &lt; pn.length(); i++){</span>
+<span class="nc" id="L78">			char a = pn.charAt(i);</span>
+<span class="nc bnc" id="L79" title="All 4 branches missed.">			if(Character.isAlphabetic(a)&amp;&amp;!list.contains(a)){</span>
+<span class="nc" id="L80">				list.add(a);</span>
+			}
+		}
+<span class="nc bnc" id="L83" title="All 2 branches missed.">		for(int i = 0; i &lt; num.length; i++){</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">			if(!list.contains(num[i].charAt(0))){</span>
+<span class="nc" id="L85">				System.out.println(&quot;Some variavles do not exist!&quot;);</span>
+<span class="nc" id="L86">				continue;</span>
+			}
+			else{
+<span class="nc" id="L89">				pn = pn.replace(num[i].substring(0, 1), num[i].substring(2, num[i].length()));</span>
+			}//替换变量与数
+		}
+		String[] array1,array2;//化简计算
+<span class="nc" id="L93">		array1 = pn.split(&quot;\\+&quot;);</span>
+<span class="nc bnc" id="L94" title="All 2 branches missed.">		for(int i = 0; i &lt; array1.length; i++){</span>
+<span class="nc" id="L95">			int m=1;</span>
+<span class="nc" id="L96">			String nullStr1=&quot;&quot;;</span>
+<span class="nc" id="L97">			array2  = array1[i].split(&quot;\\*&quot;);</span>
+<span class="nc bnc" id="L98" title="All 2 branches missed.">			for(int j = 0; j &lt; array2.length; j++){</span>
+<span class="nc bnc" id="L99" title="All 2 branches missed.">				if(Character.isDigit(array2[j].charAt(0))){</span>
+<span class="nc" id="L100">					m = m*Integer.parseInt(array2[j]);</span>
+<span class="nc" id="L101">				}</span>
+				else{
+<span class="nc" id="L103">					nullStr1+=array2[j] + &quot;*&quot;;</span>
+				}
+			}
+<span class="nc" id="L106">			nullStr1+=m+&quot;&quot;;</span>
+<span class="nc" id="L107">			array1[i]=nullStr1;</span>
+		}
+<span class="nc" id="L109">		int n=0;</span>
+<span class="nc" id="L110">		String nullStr2=&quot;&quot;;</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">		for(int i = 0; i &lt; array1.length; i++){</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">			if(Character.isDigit(array1[i].charAt(0))){</span>
+<span class="nc" id="L113">				n = n+Integer.parseInt(array1[i]);</span>
+<span class="nc" id="L114">			}</span>
+			else{
+<span class="nc bnc" id="L116" title="All 2 branches missed.">				if(array1[i].charAt(array1[i].length()-1)!='0') nullStr2+=array1[i] + &quot;+&quot;;</span>
+			}
+		}
+<span class="nc bnc" id="L119" title="All 2 branches missed.">		if(n!=0){</span>
+<span class="nc" id="L120">			nullStr2+=n+&quot;&quot;;</span>
+<span class="nc" id="L121">		}</span>
+		else{
+<span class="nc" id="L123">			nullStr2 = nullStr2.substring(0, nullStr2.length()-1);</span>
+		}
+<span class="nc" id="L125">		pn = nullStr2;</span>
+<span class="nc" id="L126">		pn = pn.replace(&quot;*1&quot;, &quot;&quot;);</span>
+<span class="nc" id="L127">		System.out.println(pn);</span>
+<span class="nc" id="L128">	}</span>
+	
+	public void Derivation(String st, String pn){//求导
+<span class="pc bpc" id="L131" title="1 of 2 branches missed.">		if(pn==null) return;</span>
+<span class="fc" id="L132">		st = st.substring(4);</span>
+<span class="pc bpc" id="L133" title="1 of 2 branches missed.">		if(st.length()==0){</span>
+<span class="nc" id="L134">			System.out.println(pn);</span>
+<span class="nc" id="L135">			return;</span>
+		}
+<span class="fc" id="L137">		st = st.substring(1);</span>
+<span class="fc" id="L138">		ArrayList list1 = new ArrayList();//判断变量是否属于多项式</span>
+<span class="fc bfc" id="L139" title="All 2 branches covered.">		for(int i = 0; i &lt; pn.length(); i++){</span>
+<span class="fc" id="L140">			char a = pn.charAt(i);</span>
+<span class="pc bpc" id="L141" title="1 of 4 branches missed.">			if(Character.isAlphabetic(a)&amp;&amp;!list1.contains(a)){</span>
+<span class="fc" id="L142">				list1.add(a);</span>
+			}
+		}
+<span class="fc" id="L145">		char var = st.charAt(0);</span>
+<span class="pc bpc" id="L146" title="1 of 2 branches missed.">		if(!list1.contains(var)){</span>
+<span class="nc" id="L147">			System.out.println(&quot;Error, No Variable!&quot;);</span>
+<span class="nc" id="L148">			System.out.println(pn);</span>
+<span class="nc" id="L149">		}</span>
+		else{
+<span class="fc" id="L151">			String[] array1 = pn.split(&quot;\\+&quot;);//求导</span>
+<span class="fc bfc" id="L152" title="All 2 branches covered.">			for(int i = 0; i &lt; array1.length; i++){</span>
+<span class="fc" id="L153">				String[] array2 = array1[i].split(&quot;\\*&quot;);</span>
+<span class="fc" id="L154">				int count = 0;</span>
+<span class="fc" id="L155">				String temp = &quot;&quot;;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">				for(int j = 0;j &lt; array2.length; j++){</span>
+<span class="fc bfc" id="L157" title="All 2 branches covered.">					if(array2[j].charAt(0)==var){</span>
+<span class="fc" id="L158">						count++;</span>
+<span class="fc" id="L159">					}</span>
+					else{
+<span class="fc" id="L161">						temp+=array2[j] + &quot;*&quot;;</span>
+					}
+				}
+<span class="pc bpc" id="L164" title="1 of 2 branches missed.">				for(int k = 0; k &lt; count-1; k++){</span>
+<span class="nc" id="L165">					temp+=var + &quot;*&quot;;</span>
+				}
+<span class="fc" id="L167">				temp+=count;</span>
+<span class="fc" id="L168">				array1[i]=temp;</span>
+			}
+<span class="fc" id="L170">			String temp2 = &quot;&quot;;</span>
+<span class="fc bfc" id="L171" title="All 2 branches covered.">			for(int i = 0; i &lt; array1.length; i++){</span>
+<span class="fc bfc" id="L172" title="All 2 branches covered.">				if(!array1[i].endsWith(&quot;0&quot;)){</span>
+<span class="fc" id="L173">					temp2+=array1[i]+&quot;+&quot;;</span>
+				}
+			}
+<span class="fc" id="L176">			pn = temp2+&quot;0&quot;;</span>
+			String[] array3,array4;//化简
+<span class="fc" id="L178">			array3 = pn.split(&quot;\\+&quot;);</span>
+<span class="fc bfc" id="L179" title="All 2 branches covered.">			for(int i = 0; i &lt; array3.length; i++){</span>
+<span class="fc" id="L180">				int m=1;</span>
+<span class="fc" id="L181">				String nullStr1=&quot;&quot;;</span>
+<span class="fc" id="L182">				array4  = array3[i].split(&quot;\\*&quot;);</span>
+<span class="fc bfc" id="L183" title="All 2 branches covered.">				for(int j = 0; j &lt; array4.length; j++){</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">					if(Character.isDigit(array4[j].charAt(0))){</span>
+<span class="fc" id="L185">						m = m*Integer.parseInt(array4[j]);</span>
+<span class="fc" id="L186">					}</span>
+					else{
+<span class="nc" id="L188">						nullStr1+=array4[j] + &quot;*&quot;;</span>
+					}
+				}
+<span class="fc" id="L191">				nullStr1+=m+&quot;&quot;;</span>
+<span class="fc" id="L192">				array3[i]=nullStr1;</span>
+			}
+<span class="fc" id="L194">			int n=0;</span>
+<span class="fc" id="L195">			String nullStr2=&quot;&quot;;</span>
+<span class="fc bfc" id="L196" title="All 2 branches covered.">			for(int i = 0; i &lt; array3.length; i++){</span>
+<span class="pc bpc" id="L197" title="1 of 2 branches missed.">				if(Character.isDigit(array3[i].charAt(0))){</span>
+<span class="fc" id="L198">					n = n+Integer.parseInt(array3[i]);</span>
+<span class="fc" id="L199">				}</span>
+				else{
+<span class="nc" id="L201">					nullStr2+=array3[i] + &quot;+&quot;;</span>
+				}
+			}
+<span class="pc bpc" id="L204" title="1 of 2 branches missed.">			if(n!=0){</span>
+<span class="fc" id="L205">				nullStr2+=n+&quot;&quot;;</span>
+<span class="fc" id="L206">			}</span>
+			else{
+<span class="nc" id="L208">				nullStr2 = nullStr2.substring(0, nullStr2.length()-1);</span>
+			}
+<span class="fc" id="L210">			pn = nullStr2;</span>
+<span class="fc" id="L211">			pn = pn.replace(&quot;*1&quot;, &quot;&quot;);</span>
+<span class="fc" id="L212">			System.out.println(pn);</span>
+		}
+<span class="fc" id="L214">	}</span>
+	
+	private boolean StandardPM(String st){//输入多项式规则化判断
+<span class="nc" id="L217">		final String strRegex1 = &quot;^[a-z0-9\\+\\*\\^]+$&quot;;</span>
+<span class="nc" id="L218">		Pattern pattern1 = Pattern.compile(strRegex1);</span>
+<span class="nc" id="L219">		Matcher matcher1 = pattern1.matcher(st);</span>
+<span class="nc bnc" id="L220" title="All 2 branches missed.">		if(!matcher1.find()) return false;</span>
+<span class="nc bnc" id="L221" title="All 12 branches missed.">		else if (st.startsWith(&quot;+&quot;)||st.startsWith(&quot;*&quot;)||st.endsWith(&quot;+&quot;)||st.endsWith(&quot;*&quot;)||st.startsWith(&quot;^&quot;)||st.endsWith(&quot;^&quot;)) return false;</span>
+		else{
+<span class="nc bnc" id="L223" title="All 2 branches missed.">			for(int i = 0; i &lt; st.length()-1; i++){</span>
+<span class="nc" id="L224">				char a = st.charAt(i);</span>
+<span class="nc" id="L225">				char b = st.charAt(i+1);</span>
+<span class="nc bnc" id="L226" title="All 4 branches missed.">				if(Character.isDigit(a)&amp;&amp;Character.isAlphabetic(b)||</span>
+<span class="nc bnc" id="L227" title="All 4 branches missed.">						Character.isDigit(b)&amp;&amp;Character.isAlphabetic(a))</span>
+<span class="nc" id="L228">					return false;//如果字母前后是数字，错误</span>
+<span class="nc bnc" id="L229" title="All 12 branches missed.">				if((a=='+'||a=='*'||a=='^')&amp;&amp;(b=='+'||b=='*'||b=='^'))</span>
+<span class="nc" id="L230">					return false;</span>
+<span class="nc bnc" id="L231" title="All 4 branches missed.">				if(Character.isAlphabetic(a)&amp;&amp;Character.isAlphabetic(b))</span>
+<span class="nc" id="L232">					return false;</span>
+<span class="nc bnc" id="L233" title="All 4 branches missed.">				if(Character.isDigit(a)&amp;&amp;b=='^')</span>
+<span class="nc" id="L234">					return false;</span>
+<span class="nc bnc" id="L235" title="All 4 branches missed.">				if(a=='^'&amp;&amp;Character.isAlphabetic(b))</span>
+<span class="nc" id="L236">					return false;</span>
+			}
+		}
+<span class="nc" id="L239">		return true;</span>
+	}
+	
+	private boolean StandardD(String st){
+<span class="nc bnc" id="L243" title="All 2 branches missed.">		if(st.length()!=6) return false;</span>
+<span class="nc bnc" id="L244" title="All 2 branches missed.">		else if(!Character.isAlphabetic(st.charAt(st.length()-1))) return false;</span>
+<span class="nc bnc" id="L245" title="All 2 branches missed.">		else if(st.charAt(st.length()-2)!=' ') return false;</span>
+<span class="nc" id="L246">		else return true;</span>
+	}
+	
+	private boolean StandardS(String st){
+<span class="nc" id="L250">		st = st.substring(9);</span>
+<span class="nc bnc" id="L251" title="All 2 branches missed.">		if(st.length()==0){</span>
+<span class="nc" id="L252">			return true;</span>
+		}
+<span class="nc" id="L254">		st = st.substring(1);</span>
+<span class="nc" id="L255">		final String strRegex1 = &quot;^[a-z0-9\\=\\ ]+$&quot;;</span>
+<span class="nc" id="L256">		Pattern pattern1 = Pattern.compile(strRegex1);</span>
+<span class="nc" id="L257">		Matcher matcher1 = pattern1.matcher(st);</span>
+<span class="nc bnc" id="L258" title="All 2 branches missed.">		if(!matcher1.find()) return false;</span>
+<span class="nc" id="L259">		String[] array = st.split(&quot; &quot;);</span>
+<span class="nc bnc" id="L260" title="All 2 branches missed.">		for(int i = 0; i &lt; array.length; i++){</span>
+<span class="nc bnc" id="L261" title="All 2 branches missed.">			if(array[i].length()&lt;3) return false;</span>
+<span class="nc bnc" id="L262" title="All 4 branches missed.">			if(!Character.isAlphabetic(array[i].charAt(0))||array[i].charAt(1)!='=') return false;</span>
+<span class="nc bnc" id="L263" title="All 2 branches missed.">			for(int j = 2; j &lt; array[i].length(); j++){</span>
+				
+<span class="nc bnc" id="L265" title="All 2 branches missed.">				if(!Character.isDigit(array[i].charAt(j))) return false;</span>
+			}
+		}
+<span class="nc" id="L268">		return true;</span>
+	}
+	
+	private String Convert(String st){
+<span class="nc bnc" id="L272" title="All 2 branches missed.">		if(st==null){</span>
+<span class="nc" id="L273">			System.out.println(&quot;Please Input A Polynominal First!&quot;);</span>
+<span class="nc" id="L274">			return st;</span>
+		}
+<span class="nc bnc" id="L276" title="All 2 branches missed.">		for(int i = 0; i &lt; st.length(); i++){</span>
+<span class="nc bnc" id="L277" title="All 2 branches missed.">			if(st.charAt(i)=='^'){</span>
+<span class="nc" id="L278">				int num = Integer.parseInt(String.valueOf(st.charAt(i+1)));</span>
+<span class="nc" id="L279">				String nullStr = st.substring(0, i);</span>
+<span class="nc bnc" id="L280" title="All 2 branches missed.">				for(int j = 0; j &lt; num - 1 ; j++){</span>
+<span class="nc" id="L281">					nullStr = nullStr + &quot;*&quot; + st.charAt(i-1);</span>
+				}
+<span class="nc" id="L283">				st = nullStr + st.substring(i+2, st.length());</span>
+			}
+		}
+<span class="nc" id="L286">		return st;</span>
+	}
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.eclemma.org/jacoco">JaCoCo</a> 0.7.6.201602180812</span>orzTest (2016-11-21 22:04:23)</div></body></html>
